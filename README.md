@@ -1,3 +1,5 @@
+# Smart Text Search & Autocomplete Web Application
+
 A web-based autocomplete system built using advanced data structures:
 
 - Trie (Prefix Tree)
