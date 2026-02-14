@@ -84,7 +84,7 @@ Open in browser
 
 browser
 
-**📚 Dataset**
+📚 **Dataset**
 
 Default dataset is stored in:
 
