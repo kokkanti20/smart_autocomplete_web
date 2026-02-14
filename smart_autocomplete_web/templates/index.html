@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Autocomplete System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: url("{{ url_for('static', filename='images/bg.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .glass-container {
+            width: 800px;
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+        }
+
+        .dropdown {
+            position: absolute;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            color: black;
+            border-radius: 0 0 10px 10px;
+            max-height: 220px;
+            overflow-y: auto;
+            display: none;
+            z-index: 5;
+        }
+
+        .dropdown-item {
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #f0f0f0;
+        }
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="glass-container">
+    <h1>Smart Autocomplete System</h1>
+    <div class="subtitle">
+        Trie • Radix Tree • Bloom Filter
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="search" placeholder="Start typing..." autocomplete="off">
+        <div class="dropdown" id="dropdown"></div>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label>Mode:</label>
+            <select id="mode">
+                <option value="trie">Trie (Prefix)</option>
+                <option value="radix">Radix (Prefix)</option>
+                <option value="contains">Contains (Substring)</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Top K:</label>
+            <select id="topk">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <div class="pill" id="bloom">Bloom: -</div>
+        <div class="pill" id="time">Time: - ms</div>
+        <div class="pill" id="count">Count: -</div>
+    </div>
+
+    <div class="footer">
+        Dataset Loaded: {{ total_words }} words
+    </div>
+</div>
+
+<script>
+    const searchInput = document.getElementById("search");
+    const dropdown = document.getElementById("dropdown");
+    const modeSelect = document.getElementById("mode");
+    const topkSelect = document.getElementById("topk");
+
+    const bloomText = document.getElementById("bloom");
+    const timeText = document.getElementById("time");
+    const countText = document.getElementById("count");
+
+    let timer = null;
+
+    async function fetchSuggestions() {
+        const query = searchInput.value.trim();
+        if (!query) {
+            dropdown.style.display = "none";
+            return;
+        }
+
+        const mode = modeSelect.value;
+        const topk = topkSelect.value;
+
+        const response = await fetch(`/api/suggest?q=${query}&mode=${mode}&topk=${topk}`);
+        const data = await response.json();
+
+        bloomText.innerText = "Bloom: " + (data.bloom_maybe_exists ? "Maybe Exists" : "Definitely Not");
+        timeText.innerText = "Time: " + data.time_ms + " ms";
+        countText.innerText = "Count: " + data.count;
+
+        dropdown.innerHTML = "";
+
+        if (data.suggestions.length > 0) {
+            data.suggestions.forEach(item => {
+                const div = document.createElement("div");
+                div.classList.add("dropdown-item");
+                div.innerText = item;
+                div.onclick = () => {
+                    searchInput.value = item;
+                    dropdown.style.display = "none";
+                };
+                dropdown.appendChild(div);
+            });
+            dropdown.style.display = "block";
+        } else {
+            dropdown.style.display = "none";
+        }
+    }
+
+    searchInput.addEventListener("input", () => {
+        clearTimeout(timer);
+        timer = setTimeout(fetchSuggestions, 200);
+    });
+
+    modeSelect.addEventListener("change", fetchSuggestions);
+    topkSelect.addEventListener("change", fetchSuggestions);
+</script>
+
+</body>
+</html>
