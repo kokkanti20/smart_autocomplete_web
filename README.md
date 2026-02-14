@@ -1,5 +1,3 @@
-# Smart Text Search & Autocomplete Web Application
-
 A web-based autocomplete system built using advanced data structures:
 
 - Trie (Prefix Tree)
@@ -7,6 +5,8 @@ A web-based autocomplete system built using advanced data structures:
 - Bloom Filter (Probabilistic Membership Check)
 
 This project demonstrates efficient prefix-based search and compares different data structures in a real-time web application.
+
+---
 
 ## 🚀 Features
 
@@ -19,6 +19,7 @@ This project demonstrates efficient prefix-based search and compares different d
 - Modern glassmorphism UI
 - Large English dictionary dataset support
 
+---
 
 ## 🧠 Technologies Used
 
@@ -29,7 +30,7 @@ This project demonstrates efficient prefix-based search and compares different d
 - Radix Tree
 - Bloom Filter
 
-
+---
 
 ## 📂 Project Structure
 
@@ -52,6 +53,7 @@ smart_autocomplete_web/
 └── bg.jpg
 
 
+---
 
 ## ⚙️ Installation & Setup
 
@@ -60,21 +62,15 @@ smart_autocomplete_web/
 ```bash
 python -m venv venv
 source venv/bin/activate
-
 2️⃣ Install Dependencies
 pip install -r requirements.txt
-
 3️⃣ Run Application
 python app.py
-
 4️⃣ Open Browser
-
 Go to:
 
 http://127.0.0.1:5000
-
-
-### If using GitHub Codespaces:
+If using GitHub Codespaces:
 
 Open Ports tab
 
@@ -82,45 +78,33 @@ Click port 5000
 
 Open in browser
 
-browser
-
-📚 **Dataset**
-
+📚 Dataset
 Default dataset is stored in:
 
 data/words.txt
-
-
 You can replace it with a large English dictionary file for better autocomplete results.
 
 Example:
 
 curl -O https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt
 mv words_alpha.txt words.txt
-
-**🔍 How It Works
-**
-**Trie Mode
-**
+🔍 How It Works
+Trie Mode
 Performs prefix-based search using a standard Trie.
 Time Complexity: O(L)
 
-**Radix Mode
-**
+Radix Mode
 Compressed Trie for memory efficiency.
 Time Complexity: O(L)
 
-**Contains Mode
-**
+Contains Mode
 Substring search across dataset.
 Time Complexity: O(N)
 
 Bloom Filter
-
 Quick probabilistic check for word existence.
 
-**📊 Performance
-**
+📊 Performance
 The application displays:
 
 Search time in milliseconds
@@ -128,3 +112,4 @@ Search time in milliseconds
 Number of results returned
 
 Bloom Filter membership result
+
