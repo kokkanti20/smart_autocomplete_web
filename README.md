@@ -81,3 +81,49 @@ Open Ports tab
 Click port 5000
 
 Open in browser
+
+browser
+
+📚 Dataset
+
+Default dataset is stored in:
+
+data/words.txt
+
+
+You can replace it with a large English dictionary file for better autocomplete results.
+
+Example:
+
+curl -O https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt
+mv words_alpha.txt words.txt
+
+🔍 How It Works
+Trie Mode
+
+Performs prefix-based search using a standard Trie.
+Time Complexity: O(L)
+
+Radix Mode
+
+Compressed Trie for memory efficiency.
+Time Complexity: O(L)
+
+Contains Mode
+
+Substring search across dataset.
+Time Complexity: O(N)
+
+Bloom Filter
+
+Quick probabilistic check for word existence.
+
+📊 Performance
+
+The application displays:
+
+Search time in milliseconds
+
+Number of results returned
+
+Bloom Filter membership result
