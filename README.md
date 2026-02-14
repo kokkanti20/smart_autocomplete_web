@@ -78,7 +78,8 @@ Click port 5000
 
 Open in browser
 
-📚 Dataset
+📚 **Dataset**
+
 Default dataset is stored in:
 
 data/words.txt
@@ -104,7 +105,8 @@ Time Complexity: O(N)
 Bloom Filter
 Quick probabilistic check for word existence.
 
-📊 Performance
+📊 **Performance**
+
 The application displays:
 
 Search time in milliseconds
